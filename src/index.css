@@ -1,0 +1,67 @@
+@import 'tailwindcss';
+
+@theme {
+    --color-primary: #374ceb;
+    --color-text: #1e293b;
+    --color-background: #f8fafc;
+    --color-surface: #ffffff;
+    --color-border: #e2e8f0;
+    --color-input-border: #a9a9a9;
+}
+
+@utility mes-box {
+    @apply p-4 border-2 border-gray-200 rounded-xl bg-white;
+}
+
+@utility mes-button-hover {
+    @apply rounded-lg hover:bg-primary hover:text-white;
+}
+
+@utility mes-main-title {
+    @apply text-4xl font-semibold mb-2;
+}
+
+@utility mes-sub-title {
+    @apply font-semibold text-2xl;
+}
+
+@utility mes-input-style {
+    @apply border border-input-border rounded-xs px-1;
+}
+
+@utility mes-input-flex-option {
+    @apply flex flex-col gap-2;
+}
+
+@utility mes-button {
+    @apply rounded-md px-4 py-2 text-sm font-medium
+           transition-colors cursor-pointer;
+}
+
+@utility mes-button-outline {
+    @apply border border-border bg-white text-text
+           hover:bg-gray-100;
+}
+
+@utility mes-button-primary {
+    @apply bg-primary text-white hover:brightness-90;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+}
+
+header {
+    border-bottom: 2px solid var(--color-border);
+}
+
+nav {
+    border-right: 2px solid var(--color-border);
+}
+
+a {
+    text-decoration: none;
+}
