@@ -1,16 +1,6 @@
 import { useState, type SubmitEvent } from 'react';
-import { supabase } from '../lib/supabase';
-
-type ProductionPlan = {
-    id: number;
-    plan_no: string;
-    item_code: string;
-    item_name: string;
-    quantity: number;
-    start_date: string;
-    end_date: string;
-    status: string;
-};
+import { supabase } from '../../lib/supabase';
+import type { ProductionPlan } from '../../types/productionPlan';
 
 type Props = {
     plan?: ProductionPlan | null;
