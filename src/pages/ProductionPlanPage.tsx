@@ -268,6 +268,7 @@ export function ProductionPlanPage() {
             alert('엑셀 다운로드 중 오류가 발생했습니다.');
         }
     };
+    
     const handlePageChange = (nextPage: number) => {
         if (loading || deleting || nextPage < 1 || nextPage > totalPages) {
             return;
@@ -307,10 +308,6 @@ export function ProductionPlanPage() {
                         <p className="text-lg bg-gray-100 p-3 py-1 rounded-full font-medium"> {totalCount}건</p>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                        {/* <button type="button" className="mes-button mes-button-outline">
-                            엑셀 업로드
-                        </button> */}
-
                         <button
                             type="button"
                             className="mes-button mes-button-outline"
@@ -318,7 +315,6 @@ export function ProductionPlanPage() {
                             disabled={loading || deleting || selectedIds.length === 0}
                         >
                             엑셀 다운로드
-                            {/* ({selectedIds.length}) */}
                         </button>
 
                         {employee?.role === 'ADMIN' && (

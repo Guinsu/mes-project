@@ -9,6 +9,7 @@ type Props = {
 };
 
 export function ProductionPlanModal({ plan, onClose, onSaved }: Props) {
+    // 수정할 생산계획 정보 또는 신규 등록 기본값 설정
     const [form, setForm] = useState({
         plan_no: plan?.plan_no ?? '',
         item_code: plan?.item_code ?? '',
@@ -20,27 +21,32 @@ export function ProductionPlanModal({ plan, onClose, onSaved }: Props) {
     const [saving, setSaving] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
+    // 생산계획 등록 및 수정 기능
     const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrorMessage('');
 
         const quantity = Number(form.quantity);
 
+        // 계획수량의 양의 정수 여부 확인
         if (!Number.isSafeInteger(quantity) || quantity <= 0) {
             setErrorMessage('계획수량은 1 이상의 정수여야 합니다.');
             return;
         }
 
+        // 필수 입력값 확인
         if (!form.plan_no.trim() || !form.item_code.trim() || !form.item_name.trim()) {
             setErrorMessage('필수 항목을 입력해 주세요.');
             return;
         }
 
+        // 계획기간 입력 여부 확인
         if (!form.start_date || !form.end_date) {
             setErrorMessage('계획기간을 입력해 주세요.');
             return;
         }
 
+        // 계획 시작일과 종료일 순서 확인
         if (form.start_date > form.end_date) {
             setErrorMessage('종료일은 시작일보다 빠를 수 없습니다.');
             return;
@@ -49,7 +55,7 @@ export function ProductionPlanModal({ plan, onClose, onSaved }: Props) {
         setSaving(true);
 
         try {
-            // 등록과 수정에서 공통으로 사용할 데이터
+            // 등록 및 수정에 사용할 저장값 설정
             const values = {
                 plan_no: form.plan_no.trim(),
                 item_code: form.item_code.trim(),
@@ -61,18 +67,19 @@ export function ProductionPlanModal({ plan, onClose, onSaved }: Props) {
 
             let error;
 
+            // 선택한 생산계획 수정 기능
             if (plan) {
-                // 수정: 기존 생산계획 UPDATE
                 const result = await supabase.from('production_plans').update(values).eq('id', plan.id).select('id');
 
                 error = result.error;
 
+                // 수정 대상 존재 여부 및 수정 권한 확인
                 if (!error && (!result.data || result.data.length === 0)) {
                     setErrorMessage('수정할 생산계획이 없거나 수정 권한이 없습니다.');
                     return;
                 }
             } else {
-                // 등록: 신규 생산계획 INSERT
+                // 신규 생산계획을 대기 상태로 등록
                 const result = await supabase.from('production_plans').insert({
                     ...values,
                     status: 'WAITING',
@@ -81,6 +88,7 @@ export function ProductionPlanModal({ plan, onClose, onSaved }: Props) {
                 error = result.error;
             }
 
+            // 계획번호 중복 및 저장 오류 확인
             if (error) {
                 if (error.code === '23505') {
                     setErrorMessage('이미 등록된 계획번호입니다.');
@@ -91,7 +99,7 @@ export function ProductionPlanModal({ plan, onClose, onSaved }: Props) {
                 return;
             }
 
-            // 등록 또는 수정 성공
+            // 저장 완료 후 목록 갱신 요청 및 모달 닫기
             onSaved();
             onClose();
         } catch (error) {

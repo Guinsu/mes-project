@@ -10,6 +10,7 @@ type ProductionPlanSearchProps = {
     onReset: () => void;
 };
 
+// 생산계획 검색 입력 항목 설정
 const searchFields = [
     { id: 'planNo', label: '계획번호', placeholder: '계획번호를 입력하세요.' },
     { id: 'itemCode', label: '품목코드', placeholder: '품목코드를 입력하세요.' },
@@ -17,6 +18,7 @@ const searchFields = [
 ] as const;
 
 export function ProductionPlanSearch({ search, loading, deleting, errorMessage, onChange, onSearch, onReset }: ProductionPlanSearchProps) {
+    // 조회 및 삭제 중 조회와 초기화 버튼 사용 제한
     const disabled = loading || deleting;
 
     return (
@@ -24,6 +26,7 @@ export function ProductionPlanSearch({ search, loading, deleting, errorMessage, 
             <h2 className="mes-sub-title mb-2">조회조건</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+                {/* 검색 입력값을 부모 페이지에 전달 */}
                 {searchFields.map((field) => (
                     <div key={field.id} className="mes-input-flex-option">
                         <label htmlFor={field.id} className="font-medium">
@@ -70,6 +73,7 @@ export function ProductionPlanSearch({ search, loading, deleting, errorMessage, 
                 </div>
 
                 <div className="mes-input-flex-option">
+                    {/* 조회할 계획기간 설정 */}
                     <label className="font-medium">계획기간</label>
 
                     <div className="flex items-center gap-1">
@@ -116,6 +120,7 @@ export function ProductionPlanSearch({ search, loading, deleting, errorMessage, 
                 </button>
             </div>
 
+            {/* 생산계획 조회 오류 표시 */}
             {errorMessage && (
                 <p role="alert" className="mt-2 text-sm text-red-600">
                     {errorMessage}

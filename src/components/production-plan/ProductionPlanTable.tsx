@@ -26,10 +26,13 @@ export function ProductionPlanTable({
     onSelectAll,
     onEdit,
 }: ProductionPlanTableProps) {
+    // 조회 및 삭제 중 선택 제한
     const isDisabled = loading || deleting;
 
+    // 현재 페이지 생산계획 전체 선택 여부 확인
     const allSelected = plans.length > 0 && plans.every((plan) => selectedIds.includes(plan.id));
 
+    // 생산계획 목록 컬럼 및 표시 방식 설정
     const columns: TableColumn<ProductionPlan>[] = [
         {
             key: 'rowNo',
@@ -37,6 +40,7 @@ export function ProductionPlanTable({
             width: 50,
             fixed: true,
             align: 'center',
+            // 페이지에 이어지는 행 번호 계산
             render: (_, index) => (page - 1) * pageSize + index + 1,
         },
         {
@@ -123,6 +127,7 @@ export function ProductionPlanTable({
         },
     ];
 
+    // 등록 권한이 있는 사용자에게 수정 버튼 표시
     if (canRegister) {
         columns.push({
             key: 'actions',
@@ -144,6 +149,7 @@ export function ProductionPlanTable({
         });
     }
 
+    // 공통 테이블에 생산계획 데이터 및 컬럼 전달
     return (
         <DataTable
             data={plans}
